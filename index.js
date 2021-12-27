@@ -155,6 +155,128 @@ let stylingDocs = {
     }
 }
 
-pdfDoc = pdfmake.createPdfKitDocument(stylingDocs, {});
-pdfDoc.pipe(fs.createWriteStream('pdfs/styling.pdf'));
+// pdfDoc = pdfmake.createPdfKitDocument(stylingDocs, {});
+// pdfDoc.pipe(fs.createWriteStream('pdfs/styling.pdf'));
+// pdfDoc.end();
+
+
+
+
+let listTableDocs = {
+    content: [{
+        text: "About Blogger Nepal",
+        style: 'subheader'
+    }, {
+        ul: [{
+                text: 'Nepali Calendar',
+                link: 'http://calendar.bloggernepal.com'
+            },
+            'Blog',
+            'tools'
+        ]
+    }, {
+        text: '\n\n'
+    }, {
+        ol: [{
+                text: 'Is this a Word?',
+                style: 'link',
+                link: 'https://isthisaword.bloggernepal.com/'
+            },
+            {
+                text: 'Countries with State and Dialcode',
+                style: 'link',
+                link: 'https://countries.bloggernepal.com/'
+            },
+            {
+                text: 'SocketIO Client Online',
+                style: 'link',
+                link: 'https://socketio.bloggernepal.com/'
+            },
+            {
+                text: 'Bunny Jump',
+                style: 'link',
+                link: 'https://bunnyjump.bloggernepal.com/'
+            },
+        ]
+    }, ],
+    styles: {
+        header: {
+            fontSize: 18,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 30, 0, 20]
+        },
+        subheader: {
+            fontSize: 14,
+            margin: [0, 15, 0, 10],
+            color: '#003893',
+        },
+        text: {
+            alignment: 'justify'
+        },
+        link: {
+            decoration: 'underline',
+            color: '#0074c1'
+        }
+    }
+
+
+}
+
+
+let table = {
+    // headers are automatically repeated if the table spans over multiple pages
+    // you can declare how many rows should be treated as headers
+    headerRows: 3,
+    widths: ['*', 'auto', 100, 60, 50, 60, 50],
+
+    body: [
+        [{
+            text: 'Name',
+            rowSpan: 3
+        }, {
+            text: 'Age',
+            rowSpan: 3
+        }, {
+            text: 'Gender',
+            rowSpan: 3
+        }, {
+            text: 'Mark',
+            alignment: 'center',
+            colSpan: 4
+        }, {}, {}, {}],
+        [{}, {}, {}, {
+            text: 'First Year',
+            alignment: 'center',
+            colSpan: 2
+        }, {}, {
+            text: 'Second year',
+            alignment: 'center',
+            colSpan: 2
+        }, {}],
+        [{}, {}, {}, {
+            text: 'Theory',
+        }, {
+            text: 'Practical'
+        }, {
+            text: 'Theory',
+        }, {
+            text: 'Practical',
+        }],
+        // now data and values
+        ['Ram', '32', 'Male', '90', '95', '80', '95'],
+        ['Sita', '30', 'Female', '95', '95', '80', '95'],
+        ['Laxman', '26', 'Male', '70', '90', '75', '90'],
+    ]
+}
+
+listTableDocs['content'].push({
+    text: "Table Now",
+    style: 'subheader'
+}, {
+    table: table
+})
+
+pdfDoc = pdfmake.createPdfKitDocument(listTableDocs, {});
+pdfDoc.pipe(fs.createWriteStream('pdfs/listtable.pdf'));
 pdfDoc.end();
