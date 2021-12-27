@@ -277,6 +277,55 @@ listTableDocs['content'].push({
     table: table
 })
 
+// Wait for the write to complete
+
 pdfDoc = pdfmake.createPdfKitDocument(listTableDocs, {});
-pdfDoc.pipe(fs.createWriteStream('pdfs/listtable.pdf'));
+
+let writeStream = fs.createWriteStream('pdfs/listtable.pdf');
+
+pdfDoc.pipe(writeStream);
 pdfDoc.end();
+
+writeStream.on('finish', function () {
+    // do stuff here that need to be after the pdf write is completed
+
+    // sending to frontend
+    // sending as attachment
+});
+
+
+const makePDF = (datas) => {
+    let aPromise = new Promise((resolve, reject) => {
+        console.time('creatingPDF')
+
+        /// all those stuffs
+
+        let docDefination = {
+            content: [
+                'Hello World!'
+            ],
+        }
+
+
+        let pdfDoc = pdfmake.createPdfKitDocument(docDefination, {});
+
+        let writeStream = fs.createWriteStream('pdfs/test.pdf');
+
+        pdfDoc.pipe(writeStream);
+        pdfDoc.end();
+
+        writeStream.on('finish', function () {
+            console.timeEnd('creatingPDF')
+            resolve('pdfs/test.pdf');
+        });
+
+    })
+
+    return aPromise;
+}
+
+makePDF({
+    data: "asd needed"
+}).then(file => {
+    console.log(file);
+})
